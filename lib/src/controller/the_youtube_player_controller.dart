@@ -260,7 +260,7 @@ class TheYoutubePlayerController implements YoutubePlayerIFrameAPI {
     String? baseUrl,
   }) async {
     final playerHtml = await rootBundle.loadString(
-      'assets/player.html',
+      'packages/the_youtube_player/assets/player.html',
     );
 
     final platform = kIsWeb ? 'web' : defaultTargetPlatform.name.toLowerCase();
