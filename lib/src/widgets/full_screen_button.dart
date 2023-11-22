@@ -1,12 +1,11 @@
-
 import 'package:flutter/material.dart';
 
-import '../utils/youtube_player_controller.dart';
+import '../utils/the_youtube_player_controller.dart';
 
 /// A widget to display the full screen toggle button.
 class FullScreenButton extends StatefulWidget {
-  /// Overrides the default [YoutubePlayerController].
-  final YoutubePlayerController? controller;
+  /// Overrides the default [TheYoutubePlayerController].
+  final TheYoutubePlayerController? controller;
 
   /// Defines color of the button.
   final Color color;
@@ -22,12 +21,12 @@ class FullScreenButton extends StatefulWidget {
 }
 
 class _FullScreenButtonState extends State<FullScreenButton> {
-  late YoutubePlayerController _controller;
+  late TheYoutubePlayerController _controller;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final controller = YoutubePlayerController.of(context);
+    final controller = TheYoutubePlayerController.of(context);
     if (controller == null) {
       assert(
         widget.controller != null,
@@ -56,9 +55,7 @@ class _FullScreenButtonState extends State<FullScreenButton> {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(
-        _controller.value.isFullScreen
-            ? Icons.fullscreen_exit
-            : Icons.fullscreen,
+        _controller.value.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
         color: widget.color,
       ),
       onPressed: () => _controller.toggleFullScreenMode(),

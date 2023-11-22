@@ -1,13 +1,12 @@
-
 import 'package:flutter/material.dart';
 
 import '../utils/duration_formatter.dart';
-import '../utils/youtube_player_controller.dart';
+import '../utils/the_youtube_player_controller.dart';
 
 /// A widget which displays the current position of the video.
 class CurrentPosition extends StatefulWidget {
-  /// Overrides the default [YoutubePlayerController].
-  final YoutubePlayerController? controller;
+  /// Overrides the default [TheYoutubePlayerController].
+  final TheYoutubePlayerController? controller;
 
   /// Creates [CurrentPosition] widget.
   CurrentPosition({this.controller});
@@ -17,12 +16,12 @@ class CurrentPosition extends StatefulWidget {
 }
 
 class _CurrentPositionState extends State<CurrentPosition> {
-  late YoutubePlayerController _controller;
+  late TheYoutubePlayerController _controller;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final controller = YoutubePlayerController.of(context);
+    final controller = TheYoutubePlayerController.of(context);
     if (controller == null) {
       assert(
         widget.controller != null,
@@ -63,8 +62,8 @@ class _CurrentPositionState extends State<CurrentPosition> {
 
 /// A widget which displays the remaining duration of the video.
 class RemainingDuration extends StatefulWidget {
-  /// Overrides the default [YoutubePlayerController].
-  final YoutubePlayerController? controller;
+  /// Overrides the default [TheYoutubePlayerController].
+  final TheYoutubePlayerController? controller;
 
   /// Creates [RemainingDuration] widget.
   RemainingDuration({this.controller});
@@ -74,12 +73,12 @@ class RemainingDuration extends StatefulWidget {
 }
 
 class _RemainingDurationState extends State<RemainingDuration> {
-  late YoutubePlayerController _controller;
+  late TheYoutubePlayerController _controller;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final controller = YoutubePlayerController.of(context);
+    final controller = TheYoutubePlayerController.of(context);
     if (controller == null) {
       assert(
         widget.controller != null,
@@ -108,8 +107,7 @@ class _RemainingDurationState extends State<RemainingDuration> {
   Widget build(BuildContext context) {
     return Text(
       "- ${durationFormatter(
-        (_controller.metadata.duration.inMilliseconds) -
-            (_controller.value.position.inMilliseconds),
+        (_controller.metadata.duration.inMilliseconds) - (_controller.value.position.inMilliseconds),
       )}",
       style: const TextStyle(
         color: Colors.white,

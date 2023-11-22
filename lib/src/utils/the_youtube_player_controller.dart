@@ -1,4 +1,3 @@
-
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -9,10 +8,10 @@ import '../utils/youtube_meta_data.dart';
 import '../widgets/progress_bar.dart';
 import 'youtube_player_flags.dart';
 
-/// [ValueNotifier] for [YoutubePlayerController].
+/// [ValueNotifier] for [TheYoutubePlayerController].
 class YoutubePlayerValue {
   /// The duration, current position, buffering state, error state and settings
-  /// of a [YoutubePlayerController].
+  /// of a [TheYoutubePlayerController].
   YoutubePlayerValue({
     this.isReady = false,
     this.isControlsVisible = false,
@@ -145,24 +144,22 @@ class YoutubePlayerValue {
 /// To reclaim the resources used by the player call [dispose].
 ///
 /// After [dispose] all further calls are ignored.
-class YoutubePlayerController extends ValueNotifier<YoutubePlayerValue> {
+class TheYoutubePlayerController extends ValueNotifier<YoutubePlayerValue> {
   /// The video id with which the player initializes.
   final String initialVideoId;
 
   /// Composes all the flags required to control the player.
   final YoutubePlayerFlags flags;
 
-  /// Creates [YoutubePlayerController].
-  YoutubePlayerController({
+  /// Creates [TheYoutubePlayerController].
+  TheYoutubePlayerController({
     required this.initialVideoId,
     this.flags = const YoutubePlayerFlags(),
   }) : super(YoutubePlayerValue());
 
-  /// Finds [YoutubePlayerController] in the provided context.
-  static YoutubePlayerController? of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<InheritedYoutubePlayer>()
-        ?.controller;
+  /// Finds [TheYoutubePlayerController] in the provided context.
+  static TheYoutubePlayerController? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<InheritedYoutubePlayer>()?.controller;
   }
 
   _callMethod(String methodString) {
@@ -233,23 +230,20 @@ class YoutubePlayerController extends ValueNotifier<YoutubePlayerValue> {
 
   /// Sets the volume of player.
   /// Max = 100 , Min = 0
-  void setVolume(int volume) => volume >= 0 && volume <= 100
-      ? _callMethod('setVolume($volume)')
-      : throw Exception("Volume should be between 0 and 100");
+  void setVolume(int volume) => volume >= 0 && volume <= 100 ? _callMethod('setVolume($volume)') : throw Exception("Volume should be between 0 and 100");
 
   /// Seek to any position. Video auto plays after seeking.
   /// The optional allowSeekAhead parameter determines whether the player will make a new request to the server
   /// if the seconds parameter specifies a time outside of the currently buffered video data.
   /// Default allowSeekAhead = true
   void seekTo(Duration position, {bool allowSeekAhead = true}) {
-    _callMethod('seekTo(${position.inMilliseconds/1000},$allowSeekAhead)');
+    _callMethod('seekTo(${position.inMilliseconds / 1000},$allowSeekAhead)');
     play();
     updateValue(value.copyWith(position: position));
   }
 
   /// Sets the size in pixels of the player.
-  void setSize(Size size) =>
-      _callMethod('setSize(${size.width}, ${size.height})');
+  void setSize(Size size) => _callMethod('setSize(${size.width}, ${size.height})');
 
   /// Fits the video to screen width.
   void fitWidth(Size screenSize) {
@@ -290,7 +284,7 @@ class YoutubePlayerController extends ValueNotifier<YoutubePlayerValue> {
   /// The video id will reset to [initialVideoId] after reload.
   void reload() => value.webViewController?.reload();
 
-  /// Resets the value of [YoutubePlayerController].
+  /// Resets the value of [TheYoutubePlayerController].
   void reset() => updateValue(
         value.copyWith(
           isReady: false,
@@ -309,7 +303,7 @@ class YoutubePlayerController extends ValueNotifier<YoutubePlayerValue> {
       );
 }
 
-/// An inherited widget to provide [YoutubePlayerController] to it's descendants.
+/// An inherited widget to provide [TheYoutubePlayerController] to it's descendants.
 class InheritedYoutubePlayer extends InheritedWidget {
   /// Creates [InheritedYoutubePlayer]
   const InheritedYoutubePlayer({
@@ -318,10 +312,9 @@ class InheritedYoutubePlayer extends InheritedWidget {
     required Widget child,
   }) : super(key: key, child: child);
 
-  /// A [YoutubePlayerController] which controls the player.
-  final YoutubePlayerController controller;
+  /// A [TheYoutubePlayerController] which controls the player.
+  final TheYoutubePlayerController controller;
 
   @override
-  bool updateShouldNotify(InheritedYoutubePlayer oldPlayer) =>
-      oldPlayer.controller.hashCode != controller.hashCode;
+  bool updateShouldNotify(InheritedYoutubePlayer oldPlayer) => oldPlayer.controller.hashCode != controller.hashCode;
 }

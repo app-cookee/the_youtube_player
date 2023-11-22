@@ -7,7 +7,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '../enums/player_state.dart';
 import '../utils/youtube_meta_data.dart';
-import '../utils/youtube_player_controller.dart';
+import '../utils/the_youtube_player_controller.dart';
 
 /// A raw youtube player widget which interacts with the underlying webview inorder to play YouTube videos.
 ///
@@ -29,9 +29,8 @@ class RawYoutubePlayer extends StatefulWidget {
   _RawYoutubePlayerState createState() => _RawYoutubePlayerState();
 }
 
-class _RawYoutubePlayerState extends State<RawYoutubePlayer>
-    with WidgetsBindingObserver {
-  YoutubePlayerController? controller;
+class _RawYoutubePlayerState extends State<RawYoutubePlayer> with WidgetsBindingObserver {
+  TheYoutubePlayerController? controller;
   PlayerState? _cachedPlayerState;
   bool _isPlayerReady = false;
   bool _onLoadStopCalled = false;
@@ -52,8 +51,7 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-        if (_cachedPlayerState != null &&
-            _cachedPlayerState == PlayerState.playing) {
+        if (_cachedPlayerState != null && _cachedPlayerState == PlayerState.playing) {
           controller?.play();
         }
         break;
@@ -69,7 +67,7 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
 
   @override
   Widget build(BuildContext context) {
-    controller = YoutubePlayerController.of(context);
+    controller = TheYoutubePlayerController.of(context);
     return IgnorePointer(
       ignoring: true,
       child: InAppWebView(
@@ -178,8 +176,7 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
               handlerName: 'PlaybackQualityChange',
               callback: (args) {
                 controller!.updateValue(
-                  controller!.value
-                      .copyWith(playbackQuality: args.first as String),
+                  controller!.value.copyWith(playbackQuality: args.first as String),
                 );
               },
             )
@@ -204,8 +201,7 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
               handlerName: 'VideoData',
               callback: (args) {
                 controller!.updateValue(
-                  controller!.value.copyWith(
-                      metaData: YoutubeMetaData.fromRawData(args.first)),
+                  controller!.value.copyWith(metaData: YoutubeMetaData.fromRawData(args.first)),
                 );
               },
             )
@@ -389,7 +385,5 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
 
   String boolean({required bool value}) => value == true ? "'1'" : "'0'";
 
-  String get userAgent => controller!.flags.forceHD
-      ? 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'
-      : '';
+  String get userAgent => controller!.flags.forceHD ? 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36' : '';
 }

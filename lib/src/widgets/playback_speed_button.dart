@@ -1,13 +1,12 @@
-
 import 'package:flutter/material.dart';
 
 import '../enums/playback_rate.dart';
-import '../utils/youtube_player_controller.dart';
+import '../utils/the_youtube_player_controller.dart';
 
 /// A widget to display playback speed changing button.
 class PlaybackSpeedButton extends StatefulWidget {
-  /// Overrides the default [YoutubePlayerController].
-  final YoutubePlayerController? controller;
+  /// Overrides the default [TheYoutubePlayerController].
+  final TheYoutubePlayerController? controller;
 
   /// Defines icon for the button.
   final Widget? icon;
@@ -23,12 +22,12 @@ class PlaybackSpeedButton extends StatefulWidget {
 }
 
 class _PlaybackSpeedButtonState extends State<PlaybackSpeedButton> {
-  late YoutubePlayerController _controller;
+  late TheYoutubePlayerController _controller;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final controller = YoutubePlayerController.of(context);
+    final controller = TheYoutubePlayerController.of(context);
     if (controller == null) {
       assert(
         widget.controller != null,

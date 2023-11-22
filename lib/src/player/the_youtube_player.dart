@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../enums/thumbnail_quality.dart';
 import '../utils/errors.dart';
 import '../utils/youtube_meta_data.dart';
-import '../utils/youtube_player_controller.dart';
+import '../utils/the_youtube_player_controller.dart';
 import '../utils/youtube_player_flags.dart';
 import '../widgets/widgets.dart';
 import 'raw_youtube_player.dart';
@@ -38,8 +38,8 @@ class TheYoutubePlayer extends StatefulWidget {
   /// Sets [Key] as an identification to underlying web view associated to the player.
   final Key? key;
 
-  /// A [YoutubePlayerController] to control the player.
-  final YoutubePlayerController controller;
+  /// A [TheYoutubePlayerController] to control the player.
+  final TheYoutubePlayerController controller;
 
   /// {@template youtube_player_flutter.width}
   /// Defines the width of the player.
@@ -151,20 +151,31 @@ class TheYoutubePlayer extends StatefulWidget {
   ///
   /// If videoId is passed as url then no conversion is done.
   static String? convertUrlToId(String url, {bool trimWhitespaces = true}) {
-    if (!url.contains("http") && (url.length == 11)) return url;
-    if (trimWhitespaces) url = url.trim();
+    // Basic validation for non-HTTP strings.
+    if (!url.contains("http") && url.length == 11) {
+      return url;
+    }
 
-    for (var exp in [
+    // Trimming whitespace from the URL.
+    url = url.trim();
+
+    // List of regular expressions covering various YouTube URL formats.
+    List<RegExp> patterns = [
       RegExp(r"^https:\/\/(?:www\.|m\.)?youtube\.com\/watch\?v=([_\-a-zA-Z0-9]{11}).*$"),
       RegExp(r"^https:\/\/(?:music\.)?youtube\.com\/watch\?v=([_\-a-zA-Z0-9]{11}).*$"),
       RegExp(r"^https:\/\/(?:www\.|m\.)?youtube\.com\/shorts\/([_\-a-zA-Z0-9]{11}).*$"),
       RegExp(r"^https:\/\/(?:www\.|m\.)?youtube(?:-nocookie)?\.com\/embed\/([_\-a-zA-Z0-9]{11}).*$"),
       RegExp(r"^https:\/\/youtu\.be\/([_\-a-zA-Z0-9]{11}).*$")
-    ]) {
-      Match? match = exp.firstMatch(url);
-      if (match != null && match.groupCount >= 1) return match.group(1);
+    ];
+
+    for (var exp in patterns) {
+      RegExpMatch? match = exp.firstMatch(url);
+      if (match != null && match.groupCount >= 1) {
+        return match.group(1);
+      }
     }
 
+    // Return null if no match is found.
     return null;
   }
 
@@ -181,7 +192,7 @@ class TheYoutubePlayer extends StatefulWidget {
 }
 
 class _TheYoutubePlayerState extends State<TheYoutubePlayer> {
-  late YoutubePlayerController controller;
+  late TheYoutubePlayerController controller;
 
   late double _aspectRatio;
   bool _initialLoad = true;

@@ -1,17 +1,16 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 
 import '../utils/duration_formatter.dart';
-import '../utils/youtube_player_controller.dart';
+import '../utils/the_youtube_player_controller.dart';
 
 /// A widget to display darkened translucent overlay, when video area is touched.
 ///
 /// Also provides ability to seek video by dragging horizontally.
 class TouchShutter extends StatefulWidget {
-  /// Overrides the default [YoutubePlayerController].
-  final YoutubePlayerController? controller;
+  /// Overrides the default [TheYoutubePlayerController].
+  final TheYoutubePlayerController? controller;
 
   /// If true, disables the drag to seek functionality.
   ///
@@ -42,12 +41,12 @@ class _TouchShutterState extends State<TouchShutter> {
   bool _dragging = false;
   Timer? _timer;
 
-  late YoutubePlayerController _controller;
+  late TheYoutubePlayerController _controller;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final controller = YoutubePlayerController.of(context);
+    final controller = TheYoutubePlayerController.of(context);
     if (controller == null) {
       assert(
         widget.controller != null,
@@ -103,13 +102,9 @@ class _TouchShutterState extends State<TouchShutter> {
                 ),
               );
               delta = details.globalPosition.dx - dragStartPos;
-              seekToPosition =
-                  (_controller.value.position.inMilliseconds + delta * 1000)
-                      .round();
+              seekToPosition = (_controller.value.position.inMilliseconds + delta * 1000).round();
               setState(() {
-                seekDuration = (delta < 0 ? "- " : "+ ") +
-                    durationFormatter(
-                        (delta < 0 ? -1 : 1) * (delta * 1000).round());
+                seekDuration = (delta < 0 ? "- " : "+ ") + durationFormatter((delta < 0 ? -1 : 1) * (delta * 1000).round());
                 if (seekToPosition < 0) seekToPosition = 0;
                 seekPosition = durationFormatter(seekToPosition);
               });
@@ -135,16 +130,13 @@ class _TouchShutterState extends State<TouchShutter> {
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              color: _controller.value.isControlsVisible
-                  ? Colors.black.withAlpha(150)
-                  : Colors.transparent,
+              color: _controller.value.isControlsVisible ? Colors.black.withAlpha(150) : Colors.transparent,
               child: _dragging
                   ? Center(
                       child: Container(
                         padding: const EdgeInsets.all(4.0),
                         decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(5.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(5.0)),
                           color: Colors.black.withAlpha(150),
                         ),
                         child: Text(
