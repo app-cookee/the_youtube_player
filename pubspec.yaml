@@ -4,13 +4,21 @@ version: 0.0.1
 # homepage:
 
 environment:
-  sdk: '>=3.2.0 <4.0.0'
-  flutter: ">=1.17.0"
+  sdk: ^3.5.0
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_inappwebview: ^6.0.0
+  flutter_inappwebview:
+    git:
+      url: https://github.com/pichillilorenzo/flutter_inappwebview
+      ref: 18136c2
+      path: flutter_inappwebview
+      # flutter_inappwebview_ios:
+      #   git:
+      #     url: https://github.com/pichillilorenzo/flutter_inappwebview
+      #     ref: ca417f8
+      #     path: flutter_inappwebview_ios
 
 
 dev_dependencies:
