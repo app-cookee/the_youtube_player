@@ -1,13 +1,17 @@
+// Copyright 2020 Sarbagya Dhaubanjar. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'package:flutter/material.dart';
 
-import '../utils/the_youtube_player_controller.dart';
+import '../utils/youtube_player_controller.dart';
 import 'duration_widgets.dart';
 import 'full_screen_button.dart';
 
 /// A widget to display bottom controls bar on Live Video Mode.
 class LiveBottomBar extends StatefulWidget {
-  /// Overrides the default [TheYoutubePlayerController].
-  final TheYoutubePlayerController? controller;
+  /// Overrides the default [YoutubePlayerController].
+  final YoutubePlayerController? controller;
 
   /// Defines color for UI.
   final Color liveUIColor;
@@ -29,12 +33,12 @@ class LiveBottomBar extends StatefulWidget {
 class _LiveBottomBarState extends State<LiveBottomBar> {
   double _currentSliderPosition = 0.0;
 
-  late TheYoutubePlayerController _controller;
+  late YoutubePlayerController _controller;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final controller = TheYoutubePlayerController.of(context);
+    final controller = YoutubePlayerController.of(context);
     if (controller == null) {
       assert(
         widget.controller != null,
@@ -57,7 +61,11 @@ class _LiveBottomBarState extends State<LiveBottomBar> {
   void listener() {
     if (mounted) {
       setState(() {
-        _currentSliderPosition = _controller.metadata.duration.inMilliseconds == 0 ? 0 : _controller.value.position.inMilliseconds / _controller.metadata.duration.inMilliseconds;
+        _currentSliderPosition =
+            _controller.metadata.duration.inMilliseconds == 0
+                ? 0
+                : _controller.value.position.inMilliseconds /
+                    _controller.metadata.duration.inMilliseconds;
       });
     }
   }
@@ -80,7 +88,9 @@ class _LiveBottomBarState extends State<LiveBottomBar> {
                 onChanged: (value) {
                   _controller.seekTo(
                     Duration(
-                      milliseconds: (_controller.metadata.duration.inMilliseconds * value).round(),
+                      milliseconds:
+                          (_controller.metadata.duration.inMilliseconds * value)
+                              .round(),
                     ),
                   );
                 },
@@ -106,7 +116,9 @@ class _LiveBottomBarState extends State<LiveBottomBar> {
               ),
             ),
           ),
-          widget.showLiveFullscreenButton ? FullScreenButton(controller: _controller) : const SizedBox(width: 14.0),
+          widget.showLiveFullscreenButton
+              ? FullScreenButton(controller: _controller)
+              : const SizedBox(width: 14.0),
         ],
       ),
     );

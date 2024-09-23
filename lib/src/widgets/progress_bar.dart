@@ -1,6 +1,10 @@
+// Copyright 2020 Sarbagya Dhaubanjar. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'package:flutter/material.dart';
 
-import '../utils/the_youtube_player_controller.dart';
+import '../utils/youtube_player_controller.dart';
 
 /// Defines different colors for [ProgressBar].
 class ProgressBarColors {
@@ -41,8 +45,8 @@ class ProgressBarColors {
 
 /// A widget to display video progress bar.
 class ProgressBar extends StatefulWidget {
-  /// Overrides the default [TheYoutubePlayerController].
-  final TheYoutubePlayerController? controller;
+  /// Overrides the default [YoutubePlayerController].
+  final YoutubePlayerController? controller;
 
   /// Defines colors for the progress bar.
   final ProgressBarColors? colors;
@@ -66,7 +70,7 @@ class ProgressBar extends StatefulWidget {
 }
 
 class _ProgressBarState extends State<ProgressBar> {
-  late TheYoutubePlayerController _controller;
+  late YoutubePlayerController _controller;
 
   Offset _touchPoint = Offset.zero;
 
@@ -79,7 +83,7 @@ class _ProgressBarState extends State<ProgressBar> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final controller = TheYoutubePlayerController.of(context);
+    final controller = YoutubePlayerController.of(context);
     if (controller == null) {
       assert(
         widget.controller != null,
@@ -104,7 +108,8 @@ class _ProgressBarState extends State<ProgressBar> {
     var _totalDuration = _controller.metadata.duration.inMilliseconds;
     if (mounted && !_totalDuration.isNaN && _totalDuration != 0) {
       setState(() {
-        _playedValue = _controller.value.position.inMilliseconds / _totalDuration;
+        _playedValue =
+            _controller.value.position.inMilliseconds / _totalDuration;
         _bufferedValue = _controller.value.buffered;
       });
     }
@@ -182,7 +187,8 @@ class _ProgressBarState extends State<ProgressBar> {
   }
 
   @override
-  Widget build(BuildContext context) => widget.isExpanded ? Expanded(child: _buildBar()) : _buildBar();
+  Widget build(BuildContext context) =>
+      widget.isExpanded ? Expanded(child: _buildBar()) : _buildBar();
 }
 
 class _ProgressBarPainter extends CustomPainter {
@@ -206,7 +212,9 @@ class _ProgressBarPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_ProgressBarPainter old) {
-    return playedValue != old.playedValue || bufferedValue != old.bufferedValue || touchDown != old.touchDown;
+    return playedValue != old.playedValue ||
+        bufferedValue != old.bufferedValue ||
+        touchDown != old.touchDown;
   }
 
   @override

@@ -7,28 +7,31 @@ import 'package:zikzak_inappwebview/zikzak_inappwebview.dart';
 
 import '../enums/player_state.dart';
 import '../utils/youtube_meta_data.dart';
-import '../utils/the_youtube_player_controller.dart';
+import '../utils/youtube_player_controller.dart';
 
 /// A raw youtube player widget which interacts with the underlying webview inorder to play YouTube videos.
 ///
 /// Use [YoutubePlayer] instead.
 class RawYoutubePlayer extends StatefulWidget {
-  /// Creates a [RawYoutubePlayer] widget.
-  const RawYoutubePlayer({
-    super.key,
-    this.onEnded,
-  });
+  /// Sets [Key] as an identification to underlying web view associated to the player.
+  final Key? key;
 
   /// {@macro youtube_player_flutter.onEnded}
   final void Function(YoutubeMetaData metaData)? onEnded;
 
+  /// Creates a [RawYoutubePlayer] widget.
+  RawYoutubePlayer({
+    this.key,
+    this.onEnded,
+  });
+
   @override
-  State<RawYoutubePlayer> createState() => _RawYoutubePlayerState();
+  _RawYoutubePlayerState createState() => _RawYoutubePlayerState();
 }
 
 class _RawYoutubePlayerState extends State<RawYoutubePlayer>
     with WidgetsBindingObserver {
-  TheYoutubePlayerController? controller;
+  YoutubePlayerController? controller;
   PlayerState? _cachedPlayerState;
   bool _isPlayerReady = false;
   bool _onLoadStopCalled = false;
@@ -66,7 +69,7 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
 
   @override
   Widget build(BuildContext context) {
-    controller = TheYoutubePlayerController.of(context);
+    controller = YoutubePlayerController.of(context);
     return IgnorePointer(
       ignoring: true,
       child: InAppWebView(

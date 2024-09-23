@@ -1,12 +1,16 @@
+// Copyright 2020 Sarbagya Dhaubanjar. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'package:flutter/material.dart';
 
 import '../enums/player_state.dart';
-import '../utils/the_youtube_player_controller.dart';
+import '../utils/youtube_player_controller.dart';
 
 /// A widget to display play/pause button.
 class PlayPauseButton extends StatefulWidget {
-  /// Overrides the default [TheYoutubePlayerController].
-  final TheYoutubePlayerController? controller;
+  /// Overrides the default [YoutubePlayerController].
+  final YoutubePlayerController? controller;
 
   /// Defines placeholder widget to show when player is in buffering state.
   final Widget? bufferIndicator;
@@ -21,8 +25,9 @@ class PlayPauseButton extends StatefulWidget {
   _PlayPauseButtonState createState() => _PlayPauseButtonState();
 }
 
-class _PlayPauseButtonState extends State<PlayPauseButton> with TickerProviderStateMixin {
-  late TheYoutubePlayerController _controller;
+class _PlayPauseButtonState extends State<PlayPauseButton>
+    with TickerProviderStateMixin {
+  late YoutubePlayerController _controller;
   late AnimationController _animController;
 
   @override
@@ -38,7 +43,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with TickerProviderSt
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final controller = TheYoutubePlayerController.of(context);
+    final controller = YoutubePlayerController.of(context);
     if (controller == null) {
       assert(
         widget.controller != null,
@@ -60,19 +65,27 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with TickerProviderSt
     super.dispose();
   }
 
-  void _playPauseListener() => _controller.value.isPlaying ? _animController.forward() : _animController.reverse();
+  void _playPauseListener() => _controller.value.isPlaying
+      ? _animController.forward()
+      : _animController.reverse();
 
   @override
   Widget build(BuildContext context) {
     final _playerState = _controller.value.playerState;
-    if ((!_controller.flags.autoPlay && _controller.value.isReady) || _playerState == PlayerState.playing || _playerState == PlayerState.paused) {
+    if ((!_controller.flags.autoPlay && _controller.value.isReady) ||
+        _playerState == PlayerState.playing ||
+        _playerState == PlayerState.paused) {
       return Visibility(
-        visible: _playerState == PlayerState.cued || !_controller.value.isPlaying || _controller.value.isControlsVisible,
+        visible: _playerState == PlayerState.cued ||
+            !_controller.value.isPlaying ||
+            _controller.value.isControlsVisible,
         child: Material(
           color: Colors.transparent,
           child: InkWell(
             borderRadius: BorderRadius.circular(50.0),
-            onTap: () => _controller.value.isPlaying ? _controller.pause() : _controller.play(),
+            onTap: () => _controller.value.isPlaying
+                ? _controller.pause()
+                : _controller.play(),
             child: AnimatedIcon(
               icon: AnimatedIcons.play_pause,
               progress: _animController.view,
