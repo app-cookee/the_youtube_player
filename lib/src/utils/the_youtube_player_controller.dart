@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:zikzak_inappwebview/zikzak_inappwebview.dart';
 
 import '../enums/playback_rate.dart';
 import '../enums/player_state.dart';
