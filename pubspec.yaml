@@ -1,6 +1,6 @@
 name: the_youtube_player
 description: "A new Flutter package project."
-version: 0.0.2
+version: 0.0.3
 # homepage:
 
 environment:
@@ -9,16 +9,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  zikzak_inappwebview: ^1.0.4
+  flutter_inappwebview: ^6.1.0+1
 
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-dependency_overrides:
-  webview_flutter_android: 3.16.1
 
 flutter:
   assets:
