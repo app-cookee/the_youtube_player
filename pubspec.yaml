@@ -1,6 +1,6 @@
 name: the_youtube_player
 description: "A new Flutter package project."
-version: 0.0.3
+version: 0.0.4
 # homepage:
 
 environment:
@@ -16,6 +16,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+dependency_overrides:
+  flutter_inappwebview_android: 1.0.13
 
 flutter:
   assets:
