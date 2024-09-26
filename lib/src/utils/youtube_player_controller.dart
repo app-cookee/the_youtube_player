@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:developer';
+
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -281,8 +283,9 @@ class YoutubePlayerController extends ValueNotifier<YoutubePlayerValue> {
         DeviceOrientation.portraitDown,
       ]);
     } else {
-      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     }
+    log("Full screen mode triggered : ${value.isFullScreen}");
   }
 
   /// MetaData for the currently loaded or cued video.
